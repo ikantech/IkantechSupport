@@ -32,14 +32,14 @@ import com.ikantech.support.utils.YiLog;
  * 
  */
 public class YiCrashHandler implements UncaughtExceptionHandler {
-	private static String mPath = null;
+	protected static String mPath = null;
 
 	// 系统默认的UncaughtException处理类
 	private Thread.UncaughtExceptionHandler mDefaultHandler;
 	// CrashHandler实例
 	private static YiCrashHandler mInstance = null;
 	// 程序的Context对象
-	private Context mContext;
+	protected Context mContext;
 	// 用来存储设备信息和异常信息
 	private Map<String, String> mInfos = new HashMap<String, String>();
 
@@ -104,7 +104,7 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 	 * @param ex
 	 * @return true:如果处理了该异常信息;否则返回false.
 	 */
-	private boolean handleException(Throwable ex) {
+	protected boolean handleException(Throwable ex) {
 		if (ex == null) {
 			return false;
 		}
@@ -167,7 +167,7 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 	 * @param ex
 	 * @return 返回文件名称,便于将文件传送到服务器
 	 */
-	private String saveCrashInfo2File(Throwable ex) {
+	protected String saveCrashInfo2File(Throwable ex) {
 		if (mPath == null)
 			return null;
 		StringBuffer sb = new StringBuffer();

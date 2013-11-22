@@ -7,7 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.ikantech.support.service.YiLocalService;
-import com.ikantech.support.service.YiLocalService.LocalServiceBinder;
+import com.ikantech.support.service.YiLocalService.YiLocalServiceBinder;
 import com.ikantech.support.utils.YiLog;
 
 /**
@@ -17,14 +17,14 @@ import com.ikantech.support.utils.YiLog;
  * 
  */
 public class YiLocalServiceBinderProxy {
-	private LocalServiceBinder mService = null;
+	private YiLocalServiceBinder mService = null;
 	private Context mContext = null;
 	private ServiceConnection mExConnection = null;
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			mService = (LocalServiceBinder) service;
+			mService = (YiLocalServiceBinder) service;
 			if (mExConnection != null) {
 				mExConnection.onServiceConnected(name, service);
 			}
@@ -61,7 +61,7 @@ public class YiLocalServiceBinderProxy {
 		mContext.unbindService(mConnection);
 	}
 
-	public LocalServiceBinder getLocalService() {
+	public YiLocalServiceBinder getLocalService() {
 		if (mService == null) {
 			throw new NullPointerException("mService is null");
 		}
@@ -75,6 +75,6 @@ public class YiLocalServiceBinderProxy {
 
 		void uninstallLocalServiceBinder();
 
-		LocalServiceBinder getLocalService();
+		YiLocalServiceBinder getLocalService();
 	}
 }

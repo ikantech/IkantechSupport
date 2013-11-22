@@ -8,6 +8,8 @@
         android:minSdkVersion="7"
         android:targetSdkVersion="7" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -25,8 +27,7 @@
 
         <service
             android:name="com.ikantech.support.service.LocalService"
-            android:exported="false" >
-        </service>
+            android:exported="false" />
     </application>
 
 </manifest>

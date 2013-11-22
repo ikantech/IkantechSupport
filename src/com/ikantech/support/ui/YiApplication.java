@@ -1,20 +1,21 @@
 package com.ikantech.support.ui;
 
 import android.app.Application;
-import android.os.Environment;
 
 import com.ikantech.localservicesupport.R;
 import com.ikantech.support.common.YiCrashHandler;
 import com.ikantech.support.proxy.YiDialogProxy;
+import com.ikantech.support.utils.YiFileUtils;
+import com.ikantech.support.utils.YiLog;
 
 public class YiApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		initialize();
 		if (openCrashHandler()) {
 			initCrashHandler();
 		}
-		initialize();
 	}
 
 	protected void initCrashHandler() {
@@ -23,8 +24,14 @@ public class YiApplication extends Application {
 	}
 
 	protected void initialize() {
-		YiCrashHandler.setLogPath(Environment.getExternalStorageDirectory()
-				.getPath() + "yicrash/");
+		YiLog.ENABLE_DEBUG = true;
+		YiLog.ENABLE_ERROR = true;
+		YiLog.ENABLE_INFO = true;
+		YiLog.ENABLE_WARN = true;
+		YiLog.ENABLE_VERBOSE = true;
+
+		YiFileUtils.register(this);
+		YiCrashHandler.setLogPath(YiFileUtils.getStorePath() + "yicrash/");
 		YiDialogProxy.setMsgDialogLayoutRes(R.layout.dialog_template);
 		YiDialogProxy.setMsgDialogTheme(R.style.Custom_Dialog);
 	}

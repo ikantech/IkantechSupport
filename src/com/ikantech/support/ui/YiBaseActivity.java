@@ -5,12 +5,12 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import com.ikantech.support.proxy.YiDialogProxy;
-import com.ikantech.support.proxy.YiLocalServiceBinderProxy;
-import com.ikantech.support.proxy.YiToastProxy;
 import com.ikantech.support.proxy.YiDialogProxy.YiDialogProxiable;
+import com.ikantech.support.proxy.YiLocalServiceBinderProxy;
 import com.ikantech.support.proxy.YiLocalServiceBinderProxy.YiLocalServiceServiceBinderProxiable;
+import com.ikantech.support.proxy.YiToastProxy;
 import com.ikantech.support.proxy.YiToastProxy.YiToastProxiable;
-import com.ikantech.support.service.YiLocalService.LocalServiceBinder;
+import com.ikantech.support.service.YiLocalService.YiLocalServiceBinder;
 
 public class YiBaseActivity extends Activity implements YiToastProxiable,
 		YiLocalServiceServiceBinderProxiable, YiDialogProxiable {
@@ -85,7 +85,7 @@ public class YiBaseActivity extends Activity implements YiToastProxiable,
 	}
 
 	@Override
-	public LocalServiceBinder getLocalService() {
+	public YiLocalServiceBinder getLocalService() {
 		// TODO Auto-generated method stub
 		return mLocalServiceBinderProxy.getLocalService();
 	}

@@ -13,10 +13,11 @@ import android.util.Log;
  */
 public class YiLog {
 	// release版本时，记得把不必要的log关闭
-	public static final boolean ENABLE_DEBUG = true;
-	public static final boolean ENABLE_INFO = true;
-	public static final boolean ENABLE_ERROR = true;
-	public static final boolean ENABLE_WARN = true;
+	public static boolean ENABLE_DEBUG = false;
+	public static boolean ENABLE_INFO = false;
+	public static boolean ENABLE_ERROR = false;
+	public static boolean ENABLE_WARN = false;
+	public static boolean ENABLE_VERBOSE = false;
 
 	private static YiLog instance = null;
 
@@ -137,6 +138,24 @@ public class YiLog {
 	public void e(Throwable err, String msg, Object... args) {
 		if (ENABLE_ERROR) {
 			Log.e(tag, format(msg, args), err);
+		}
+	}
+
+	public void v(String msg) {
+		if (ENABLE_VERBOSE) {
+			Log.v(tag, msg);
+		}
+	}
+
+	public void v(String msg, Object... args) {
+		if (ENABLE_VERBOSE) {
+			Log.v(tag, format(msg, args));
+		}
+	}
+
+	public void v(Throwable err, String msg, Object... args) {
+		if (ENABLE_VERBOSE) {
+			Log.v(tag, format(msg, args), err);
 		}
 	}
 }
