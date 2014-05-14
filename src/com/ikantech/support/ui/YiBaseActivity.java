@@ -4,33 +4,29 @@ import android.app.Activity;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 
+import com.ikantech.support.proxy.YiActivityProxy;
 import com.ikantech.support.proxy.YiDialogProxy;
 import com.ikantech.support.proxy.YiDialogProxy.YiDialogProxiable;
-import com.ikantech.support.proxy.YiLocalServiceBinderProxy;
 import com.ikantech.support.proxy.YiLocalServiceBinderProxy.YiLocalServiceServiceBinderProxiable;
-import com.ikantech.support.proxy.YiToastProxy;
 import com.ikantech.support.proxy.YiToastProxy.YiToastProxiable;
 import com.ikantech.support.service.YiLocalService.YiLocalServiceBinder;
 
 public class YiBaseActivity extends Activity implements YiToastProxiable,
-		YiLocalServiceServiceBinderProxiable, YiDialogProxiable {
-	// Toast代理
-	private YiToastProxy mToastProxy = null;
-	// 本地Service绑定代理
-	private YiLocalServiceBinderProxy mLocalServiceBinderProxy = null;
-	// 对话框代理
-	private YiDialogProxy mDialogProxy = null;
+		YiLocalServiceServiceBinderProxiable, YiDialogProxiable
+{
+	protected YiActivityProxy mActivityProxy;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
+		mActivityProxy = new YiActivityProxy(this);
 	}
 
 	@Override
-	protected void onDestroy() {
-		if (mDialogProxy != null) {
-			mDialogProxy.cancelMsgDialog();
-		}
+	protected void onDestroy()
+	{
+		mActivityProxy.onDestroy();
 		super.onDestroy();
 	}
 
@@ -38,92 +34,90 @@ public class YiBaseActivity extends Activity implements YiToastProxiable,
 	 * ToastProxy
 	 *******************************************************************************/
 	@Override
-	public void showToast(int resourceId) {
-		initToastProxy();
-		mToastProxy.showToast(resourceId);
+	public void showToast(int resourceId)
+	{
+		mActivityProxy.showToast(resourceId);
 	}
 
 	@Override
-	public void showToast(String text) {
-		initToastProxy();
-		mToastProxy.showToast(text);
-	}
-
-	protected void initToastProxy() {
-		if (mToastProxy == null) {
-			mToastProxy = new YiToastProxy(this);
-		}
+	public void showToast(String text)
+	{
+		mActivityProxy.showToast(text);
 	}
 
 	/*******************************************************************************
 	 * LocalServiceBinderProxy
 	 *******************************************************************************/
-	protected void initLocalServiceBinderProxy() {
-		if (mLocalServiceBinderProxy == null) {
-			mLocalServiceBinderProxy = new YiLocalServiceBinderProxy(this);
-		}
+	@Override
+	public void installLocalServiceBinder()
+	{
+		// TODO Auto-generated method stub
+		mActivityProxy.installLocalServiceBinder();
 	}
 
 	@Override
-	public void installLocalServiceBinder() {
+	public void installLocalServiceBinder(ServiceConnection connection)
+	{
 		// TODO Auto-generated method stub
-		initLocalServiceBinderProxy();
-		mLocalServiceBinderProxy.installLocalServiceBinder();
+		mActivityProxy.installLocalServiceBinder(connection);
 	}
 
 	@Override
-	public void installLocalServiceBinder(ServiceConnection connection) {
+	public void uninstallLocalServiceBinder()
+	{
 		// TODO Auto-generated method stub
-		initLocalServiceBinderProxy();
-		mLocalServiceBinderProxy.installLocalServiceBinder(connection);
+		mActivityProxy.uninstallLocalServiceBinder();
 	}
 
 	@Override
-	public void uninstallLocalServiceBinder() {
+	public YiLocalServiceBinder getLocalService()
+	{
 		// TODO Auto-generated method stub
-		mLocalServiceBinderProxy.uninstallLocalServiceBinder();
-	}
-
-	@Override
-	public YiLocalServiceBinder getLocalService() {
-		// TODO Auto-generated method stub
-		return mLocalServiceBinderProxy.getLocalService();
+		return mActivityProxy.getLocalService();
 	}
 
 	/*******************************************************************************
 	 * DialogProxy
 	 *******************************************************************************/
-	protected void initDialogProxy() {
-		if (mDialogProxy == null) {
-			mDialogProxy = new YiDialogProxy(this);
-		}
+	@Override
+	public void showMsgDialog()
+	{
+		// TODO Auto-generated method stub
+		mActivityProxy.showMsgDialog();
 	}
 
 	@Override
-	public void showMsgDialog() {
+	public void showMsgDialogWithSize(int width, int height)
+	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		mDialogProxy.showMsgDialog();
+		mActivityProxy.showMsgDialogWithSize(width, height);
 	}
 
 	@Override
-	public void showMsgDialog(int width, int height) {
+	public void showProgressDialog()
+	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		mDialogProxy.showMsgDialog(width, height);
+		mActivityProxy.showProgressDialog();
 	}
 
 	@Override
-	public YiDialogProxy getMsgDialog() {
+	public void cancelProgressDialog()
+	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		return mDialogProxy;
+		mActivityProxy.cancelProgressDialog();
 	}
 
 	@Override
-	public void cancelMsgDialog() {
+	public YiDialogProxy getDialogProxy()
+	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		mDialogProxy.cancelMsgDialog();
+		return mActivityProxy.getDialogProxy();
+	}
+
+	@Override
+	public void cancelMsgDialog()
+	{
+		// TODO Auto-generated method stub
+		mActivityProxy.cancelMsgDialog();
 	}
 }

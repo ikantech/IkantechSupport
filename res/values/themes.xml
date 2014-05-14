@@ -11,4 +11,8 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="Custom_Dialog_Dim" parent="Custom_Dialog">
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
 </resources>

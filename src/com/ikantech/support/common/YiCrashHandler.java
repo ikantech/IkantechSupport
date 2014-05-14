@@ -23,7 +23,7 @@ import android.os.Environment;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.ikantech.support.utils.YiLog;
+import com.ikantech.support.util.YiLog;
 
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,由该类来接管程序,并记录发送错误报告.
@@ -31,7 +31,8 @@ import com.ikantech.support.utils.YiLog;
  * @author saint
  * 
  */
-public class YiCrashHandler implements UncaughtExceptionHandler {
+public class YiCrashHandler implements UncaughtExceptionHandler
+{
 	protected static String mPath = null;
 
 	// 系统默认的UncaughtException处理类
@@ -49,18 +50,22 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 			"yyyy-MM-dd-HH-mm-ss");
 
 	/** 保证只有一个YiCrashHandler实例 */
-	private YiCrashHandler() {
+	private YiCrashHandler()
+	{
 	}
 
 	/** 获取YiCrashHandler实例 ,单例模式 */
-	public static YiCrashHandler getInstance() {
-		if (mInstance == null) {
+	public static YiCrashHandler getInstance()
+	{
+		if (mInstance == null)
+		{
 			mInstance = new YiCrashHandler();
 		}
 		return mInstance;
 	}
 
-	public static void setLogPath(String path) {
+	public static void setLogPath(String path)
+	{
 		mPath = path;
 		YiLog.getInstance().i(path);
 	}
@@ -70,7 +75,8 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 	 * 
 	 * @param context
 	 */
-	public void init(Context context) {
+	public void init(Context context)
+	{
 		mContext = context;
 		// 获取系统默认的UncaughtException处理器
 		mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -82,14 +88,21 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 	 * 当UncaughtException发生时会转入该函数来处理
 	 */
 	@Override
-	public void uncaughtException(Thread thread, Throwable ex) {
-		if (!handleException(ex) && mDefaultHandler != null) {
+	public void uncaughtException(Thread thread, Throwable ex)
+	{
+		if (!handleException(ex) && mDefaultHandler != null)
+		{
 			// 如果用户没有处理则让系统默认的异常处理器来处理
 			mDefaultHandler.uncaughtException(thread, ex);
-		} else {
-			try {
+		}
+		else
+		{
+			try
+			{
 				Thread.sleep(3000);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e)
+			{
 				YiLog.getInstance().e(e, "error : ");
 			}
 			// 退出程序
@@ -104,14 +117,18 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 	 * @param ex
 	 * @return true:如果处理了该异常信息;否则返回false.
 	 */
-	protected boolean handleException(Throwable ex) {
-		if (ex == null) {
+	protected boolean handleException(Throwable ex)
+	{
+		if (ex == null)
+		{
 			return false;
 		}
 		// 使用Toast来显示异常信息
-		new Thread() {
+		new Thread()
+		{
 			@Override
-			public void run() {
+			public void run()
+			{
 				Looper.prepare();
 				Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出.", Toast.LENGTH_LONG)
 						.show();
@@ -123,6 +140,8 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 		collectDeviceInfo(mContext);
 		// 保存日志文件
 		saveCrashInfo2File(ex);
+
+		YiLog.getInstance().e(ex, "crash handler exception:");
 		return true;
 	}
 
@@ -131,30 +150,39 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 	 * 
 	 * @param ctx
 	 */
-	public void collectDeviceInfo(Context ctx) {
-		try {
+	public void collectDeviceInfo(Context ctx)
+	{
+		try
+		{
 			PackageManager pm = ctx.getPackageManager();
 			PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(),
 					PackageManager.GET_ACTIVITIES);
-			if (pi != null) {
+			if (pi != null)
+			{
 				String versionName = pi.versionName == null ? "null"
 						: pi.versionName;
 				String versionCode = pi.versionCode + "";
 				mInfos.put("versionName", versionName);
 				mInfos.put("versionCode", versionCode);
 			}
-		} catch (NameNotFoundException e) {
+		}
+		catch (NameNotFoundException e)
+		{
 			YiLog.getInstance().e(e,
 					"an error occured when collect package info");
 		}
 		Field[] fields = Build.class.getDeclaredFields();
-		for (Field field : fields) {
-			try {
+		for (Field field : fields)
+		{
+			try
+			{
 				field.setAccessible(true);
 				mInfos.put(field.getName(), field.get(null).toString());
 				YiLog.getInstance()
 						.d(field.getName() + " : " + field.get(null));
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				YiLog.getInstance().e(e,
 						"an error occured when collect crash info");
 			}
@@ -167,11 +195,13 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 	 * @param ex
 	 * @return 返回文件名称,便于将文件传送到服务器
 	 */
-	protected String saveCrashInfo2File(Throwable ex) {
+	protected String saveCrashInfo2File(Throwable ex)
+	{
 		if (mPath == null)
 			return null;
 		StringBuffer sb = new StringBuffer();
-		for (Map.Entry<String, String> entry : mInfos.entrySet()) {
+		for (Map.Entry<String, String> entry : mInfos.entrySet())
+		{
 			String key = entry.getKey();
 			String value = entry.getValue();
 			sb.append(key + "=" + value + "\n");
@@ -181,21 +211,25 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 		PrintWriter printWriter = new PrintWriter(writer);
 		ex.printStackTrace(printWriter);
 		Throwable cause = ex.getCause();
-		while (cause != null) {
+		while (cause != null)
+		{
 			cause.printStackTrace(printWriter);
 			cause = cause.getCause();
 		}
 		printWriter.close();
 		String result = writer.toString();
 		sb.append(result);
-		try {
+		try
+		{
 			long timestamp = System.currentTimeMillis();
 			String time = mDateFormatter.format(new Date());
 			String fileName = "crash-" + time + "-" + timestamp + ".log";
 			if (Environment.getExternalStorageState().equals(
-					Environment.MEDIA_MOUNTED)) {
+					Environment.MEDIA_MOUNTED))
+			{
 				File dir = new File(mPath);
-				if (!dir.exists()) {
+				if (!dir.exists())
+				{
 					dir.mkdirs();
 				}
 				FileOutputStream fos = new FileOutputStream(mPath + fileName);
@@ -203,7 +237,9 @@ public class YiCrashHandler implements UncaughtExceptionHandler {
 				fos.close();
 			}
 			return fileName;
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			YiLog.getInstance().e(e, "an error occured while writing file...");
 		}
 		return null;

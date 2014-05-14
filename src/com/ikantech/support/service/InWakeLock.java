@@ -4,26 +4,31 @@ import java.util.HashSet;
 
 import android.os.PowerManager;
 
-import com.ikantech.support.utils.YiLog;
+import com.ikantech.support.util.YiLog;
 
-public class InWakeLock {
+public class InWakeLock
+{
 	private PowerManager mPowerManager;
 	private PowerManager.WakeLock mWakeLock;
 	private PowerManager.WakeLock mTimerWakeLock;
 	private HashSet<Object> mHolders = new HashSet<Object>();
 
-	public InWakeLock(PowerManager powerManager) {
+	public InWakeLock(PowerManager powerManager)
+	{
 		mPowerManager = powerManager;
 	}
 
 	/**
 	 * Release this lock and reset all holders
 	 */
-	public synchronized void reset() {
+	public synchronized void reset()
+	{
 		mHolders.clear();
 		release(null);
-		if (mWakeLock != null) {
-			while (mWakeLock.isHeld()) {
+		if (mWakeLock != null)
+		{
+			while (mWakeLock.isHeld())
+			{
 				mWakeLock.release();
 			}
 			YiLog.getInstance().v(
@@ -32,8 +37,10 @@ public class InWakeLock {
 		}
 	}
 
-	public synchronized void acquire(long timeout) {
-		if (mTimerWakeLock == null) {
+	public synchronized void acquire(long timeout)
+	{
+		if (mTimerWakeLock == null)
+		{
 			mTimerWakeLock = mPowerManager.newWakeLock(
 					PowerManager.PARTIAL_WAKE_LOCK, "SipWakeLock.timer");
 			mTimerWakeLock.setReferenceCounted(true);
@@ -41,9 +48,11 @@ public class InWakeLock {
 		mTimerWakeLock.acquire(timeout);
 	}
 
-	public synchronized void acquire(Object holder) {
+	public synchronized void acquire(Object holder)
+	{
 		mHolders.add(holder);
-		if (mWakeLock == null) {
+		if (mWakeLock == null)
+		{
 			mWakeLock = mPowerManager.newWakeLock(
 					PowerManager.PARTIAL_WAKE_LOCK, "SipWakeLock");
 		}
@@ -53,9 +62,11 @@ public class InWakeLock {
 				"acquire wakelock: holder count=" + mHolders.size());
 	}
 
-	public synchronized void release(Object holder) {
+	public synchronized void release(Object holder)
+	{
 		mHolders.remove(holder);
-		if ((mWakeLock != null) && mHolders.isEmpty() && mWakeLock.isHeld()) {
+		if ((mWakeLock != null) && mHolders.isEmpty() && mWakeLock.isHeld())
+		{
 			mWakeLock.release();
 		}
 

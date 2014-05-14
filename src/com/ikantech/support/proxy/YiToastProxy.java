@@ -10,12 +10,15 @@ import android.widget.Toast;
  * @author saint
  * 
  */
-public class YiToastProxy {
+public class YiToastProxy
+{
 	private Context mContext;
 	private Toast mToast;
 
-	public YiToastProxy(Context context) {
-		if (context == null) {
+	public YiToastProxy(Context context)
+	{
+		if (context == null)
+		{
 			throw new NullPointerException("context non-null");
 		}
 		mContext = context;
@@ -23,25 +26,30 @@ public class YiToastProxy {
 	}
 
 	@SuppressLint("ShowToast")
-	protected void initToast() {
-		if (mToast == null) {
+	protected void initToast()
+	{
+		if (mToast == null)
+		{
 			mToast = Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
 		}
 	}
 
-	public void showToast(String text) {
+	public void showToast(String text)
+	{
 		initToast();
 		mToast.setText(text);
 		mToast.show();
 	}
 
-	public void showToast(int resourceId) {
+	public void showToast(int resourceId)
+	{
 		initToast();
 		mToast.setText(resourceId);
 		mToast.show();
 	}
 
-	public interface YiToastProxiable {
+	public interface YiToastProxiable
+	{
 		void showToast(int resourceId);
 
 		void showToast(String text);
