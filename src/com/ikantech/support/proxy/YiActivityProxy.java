@@ -3,6 +3,7 @@ package com.ikantech.support.proxy;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.view.View;
 
 import com.ikantech.support.service.YiLocalService.YiLocalServiceBinder;
@@ -18,6 +19,8 @@ public class YiActivityProxy
 	private YiDialogProxy mDialogProxy = null;
 
 	private Context mContext;
+
+	private Handler mHandler = new Handler();
 
 	public YiActivityProxy(Context context)
 	{
@@ -36,16 +39,30 @@ public class YiActivityProxy
 	/*******************************************************************************
 	 * ToastProxy
 	 *******************************************************************************/
-	public void showToast(int resourceId)
+	public void showToast(final int resourceId)
 	{
-		initToastProxy();
-		mToastProxy.showToast(resourceId);
+		mHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				initToastProxy();
+				mToastProxy.showToast(resourceId);
+			}
+		});
 	}
 
-	public void showToast(String text)
+	public void showToast(final String text)
 	{
-		initToastProxy();
-		mToastProxy.showToast(text);
+		mHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				initToastProxy();
+				mToastProxy.showToast(text);
+			}
+		});
 	}
 
 	protected void initToastProxy()
@@ -107,29 +124,57 @@ public class YiActivityProxy
 	public void showMsgDialog()
 	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		mDialogProxy.showMsgDialog();
+		mHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				initDialogProxy();
+				mDialogProxy.showMsgDialog();
+			}
+		});
 	}
 
-	public void showMsgDialogWithSize(int width, int height)
+	public void showMsgDialogWithSize(final int width, final int height)
 	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		mDialogProxy.showMsgDialogWithSize(width, height);
+		mHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				initDialogProxy();
+				mDialogProxy.showMsgDialogWithSize(width, height);
+			}
+		});
 	}
 
 	public void showProgressDialog()
 	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		mDialogProxy.showProgressDialog();
+		mHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				initDialogProxy();
+				mDialogProxy.showProgressDialog();
+			}
+		});
 	}
 
 	public void cancelProgressDialog()
 	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		mDialogProxy.cancelProgressDialog();
+		mHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				initDialogProxy();
+				mDialogProxy.cancelProgressDialog();
+			}
+		});
 	}
 
 	public YiDialogProxy getDialogProxy()
@@ -142,81 +187,103 @@ public class YiActivityProxy
 	public void cancelMsgDialog()
 	{
 		// TODO Auto-generated method stub
-		initDialogProxy();
-		mDialogProxy.cancelMsgDialog();
+		mHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				initDialogProxy();
+				mDialogProxy.cancelMsgDialog();
+			}
+		});
 	}
 
 	/*******************************************************************************
 	 * DialogProxy expand
 	 *******************************************************************************/
-	public void showMsgDialog(String title, String detials, String btnLeft,
-			String btnRight, View.OnClickListener btnLeftListener,
-			View.OnClickListener btnRightListener)
+	public void showMsgDialog(final String title, final String detials,
+			final String btnLeft, final String btnRight,
+			final View.OnClickListener btnLeftListener,
+			final View.OnClickListener btnRightListener)
 	{
-		YiDialogProxy dialogProxy = getDialogProxy();
-		if (!YiUtils.isStringInvalid(title))
+		mHandler.post(new Runnable()
 		{
-			dialogProxy.showMsgDialogTitle();
-			dialogProxy.setMsgDialogTitle(title);
-		}
-		else
-		{
-			dialogProxy.hideMsgDialogTitle();
-		}
+			@Override
+			public void run()
+			{
+				YiDialogProxy dialogProxy = getDialogProxy();
+				if (!YiUtils.isStringInvalid(title))
+				{
+					dialogProxy.showMsgDialogTitle();
+					dialogProxy.setMsgDialogTitle(title);
+				}
+				else
+				{
+					dialogProxy.hideMsgDialogTitle();
+				}
 
-		if (!YiUtils.isStringInvalid(detials))
-		{
-			dialogProxy.showMsgDialogDetailMsg();
-			dialogProxy.setMsgDialogDetailMsg(detials);
-		}
-		else
-		{
-			dialogProxy.hideMsgDialogDetailMsg();
-		}
+				if (!YiUtils.isStringInvalid(detials))
+				{
+					dialogProxy.showMsgDialogDetailMsg();
+					dialogProxy.setMsgDialogDetailMsg(detials);
+				}
+				else
+				{
+					dialogProxy.hideMsgDialogDetailMsg();
+				}
 
-		if (!YiUtils.isStringInvalid(btnLeft))
-		{
-			dialogProxy.showMsgDialogBtnLeft();
-			dialogProxy.setMsgDialogBtnLeftText(btnLeft);
-		}
-		else
-		{
-			dialogProxy.hideMsgDialogBtnLeft();
-		}
+				if (!YiUtils.isStringInvalid(btnLeft))
+				{
+					dialogProxy.showMsgDialogBtnLeft();
+					dialogProxy.setMsgDialogBtnLeftText(btnLeft);
+				}
+				else
+				{
+					dialogProxy.hideMsgDialogBtnLeft();
+				}
 
-		if (!YiUtils.isStringInvalid(btnRight))
-		{
-			dialogProxy.showMsgDialogBtnRight();
-			dialogProxy.setMsgDialogBtnRightText(btnRight);
-		}
-		else
-		{
-			dialogProxy.hideMsgDialogBtnRight();
-		}
-		dialogProxy.setMsgDialogCanceledOnTouchOutside(true);
-		dialogProxy.setMsgDialogBtnLeftClickListener(btnLeftListener);
-		dialogProxy.setMsgDilaogBtnRightClickListener(btnRightListener);
-		dialogProxy.showMsgDialog();
+				if (!YiUtils.isStringInvalid(btnRight))
+				{
+					dialogProxy.showMsgDialogBtnRight();
+					dialogProxy.setMsgDialogBtnRightText(btnRight);
+				}
+				else
+				{
+					dialogProxy.hideMsgDialogBtnRight();
+				}
+				dialogProxy.setMsgDialogCanceledOnTouchOutside(true);
+				dialogProxy.setMsgDialogBtnLeftClickListener(btnLeftListener);
+				dialogProxy.setMsgDilaogBtnRightClickListener(btnRightListener);
+				dialogProxy.showMsgDialog();
+			}
+		});
 	}
 
-	public void showProgressDialog(String msg, OnCancelListener listener,
-			boolean cancelable)
+	public void showProgressDialog(final String msg,
+			final OnCancelListener listener, final boolean cancelable)
 	{
-		YiDialogProxy dialogProxy = getDialogProxy();
-
-		if (!YiUtils.isStringInvalid(msg))
+		mHandler.post(new Runnable()
 		{
-			dialogProxy.showProgressDialogMsg();
-			dialogProxy.setProgressDialogMsgText(msg);
-		}
-		else
-		{
-			dialogProxy.hideProgressDialogMsg();
-		}
+			@Override
+			public void run()
+			{
+				YiDialogProxy dialogProxy = getDialogProxy();
 
-		dialogProxy.setProgressDialogCancelable(cancelable);
-		dialogProxy.setProgressDialogCancelListener(listener);
+				if (!YiUtils.isStringInvalid(msg))
+				{
+					dialogProxy.showProgressDialogMsg();
+					dialogProxy.setProgressDialogMsgText(msg);
+				}
+				else
+				{
+					dialogProxy.hideProgressDialogMsg();
+				}
 
-		dialogProxy.showProgressDialog();
+				dialogProxy.setProgressDialogCancelable(cancelable);
+				dialogProxy.setProgressDialogCancelListener(listener);
+
+				dialogProxy.showProgressDialog();
+			}
+		});
 	}
 }

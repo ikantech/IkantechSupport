@@ -183,7 +183,7 @@ public class YiStoreCache extends YiMemoryCache<String, Bitmap>
 		return null;
 	}
 
-	public byte[] getRawCacheData(String key)
+	public static byte[] getRawCacheData(String key)
 	{
 		FileInputStream fIn = null;
 		File f = new File(convertToFileName(key));
@@ -245,8 +245,9 @@ public class YiStoreCache extends YiMemoryCache<String, Bitmap>
 		}
 		return ret;
 	}
-	
-	public Bitmap getFromPath(String path) {
+
+	public Bitmap getFromPath(String path)
+	{
 		if (YiUtils.isStringInvalid(path))
 		{
 			return null;

@@ -30,6 +30,11 @@ public class YiAsyncImageLoader
 		return mImageCache.get(key);
 	}
 
+	public static void removeMemoryCache(String key)
+	{
+		mImageCache.removeMemoryCache(key);
+	}
+
 	public static void loadBitmapFromStore(final String key,
 			final YiImageLoaderListener listener)
 	{

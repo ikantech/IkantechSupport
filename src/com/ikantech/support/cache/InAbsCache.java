@@ -70,7 +70,7 @@ public abstract class InAbsCache<K, V>
 		return flag1 || flag2;
 	}
 
-	protected void removeMemoryCache(K key)
+	public void removeMemoryCache(K key)
 	{
 		synchronized (mHardCache)
 		{
