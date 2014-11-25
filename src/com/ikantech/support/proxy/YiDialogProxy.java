@@ -188,8 +188,7 @@ public class YiDialogProxy
 	{
 		initMsgDialog();
 		mMsgDialog.show();
-		DisplayMetrics dm = YiDeviceUtils
-				.getDisplayMetrics((Activity) mContext);
+		DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
 		Window window = mMsgDialog.getWindow();
 		WindowManager.LayoutParams params = window.getAttributes();
 		params.width = dm.widthPixels * 3 / 4;
@@ -199,7 +198,8 @@ public class YiDialogProxy
 
 	public void showMsgDialogWithSize(int width, int height)
 	{
-		Message msg = mHandler.obtainMessage(MSG_SHOW_MSG_DIALOG_IN_SIZE, width, height);
+		Message msg = mHandler.obtainMessage(MSG_SHOW_MSG_DIALOG_IN_SIZE,
+				width, height);
 		msg.sendToTarget();
 	}
 
@@ -249,6 +249,13 @@ public class YiDialogProxy
 	{
 		initMsgDialog();
 		mMsgDialogDetailMsg.setText(resId);
+	}
+
+	public void setMsgDialogIsSystemDialog()
+	{
+		initMsgDialog();
+		mMsgDialog.getWindow().setType(
+				WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 	}
 
 	public void setMsgDialogDetailMsg(String str)
@@ -422,7 +429,6 @@ public class YiDialogProxy
 	{
 		initProgressDialog();
 		mProgressDialog.setCancelable(flag);
-
 	}
 
 	public void setProgressDialogCanceledOnTouchOutside(boolean cancel)
@@ -441,7 +447,7 @@ public class YiDialogProxy
 		initProgressDialog();
 		mProgressDialog.show();
 		DisplayMetrics dm = YiDeviceUtils
-				.getDisplayMetrics((Activity) mContext);
+				.getDisplayMetrics(mContext);
 		Window window = mProgressDialog.getWindow();
 		WindowManager.LayoutParams params = window.getAttributes();
 		params.width = dm.widthPixels * 3 / 4;

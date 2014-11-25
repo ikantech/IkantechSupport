@@ -1,5 +1,10 @@
 package com.ikantech.support.util;
 
+import java.util.Map;
+import java.util.Set;
+
+import android.content.Context;
+import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -31,5 +36,30 @@ public class YiUtils
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * send broadcast
+	 * 
+	 * @param context
+	 *            app context
+	 * @param action
+	 *            广播Action Name
+	 * @param params
+	 *            广播参数
+	 */
+	public static void broadcast(Context context, String action,
+			Map<String, String> params)
+	{
+		Intent intent = new Intent(action);
+		if (params != null)
+		{
+			Set<String> keys = params.keySet();
+			for (String string : keys)
+			{
+				intent.putExtra(string, params.get(string));
+			}
+		}
+		context.sendBroadcast(intent);
 	}
 }

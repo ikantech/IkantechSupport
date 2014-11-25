@@ -20,6 +20,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -965,8 +966,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 				mFooterLayout.setVisibility(View.INVISIBLE);
 			}
 		}
-
-		if (USE_HW_LAYERS) {
+		if (USE_HW_LAYERS && Build.VERSION.SDK_INT >= 11) {
 			/**
 			 * Use a Hardware Layer on the Refreshable View if we've scrolled at
 			 * all. We don't use them on the Header/Footer Views as they change

@@ -17,15 +17,15 @@ package com.handmark.pulltorefresh.library.internal;
 
 import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
 
 @SuppressWarnings("deprecation")
 public class ViewCompat {
-
 	public static void postOnAnimation(View view, Runnable runnable) {
-		if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+		if (VERSION.SDK_INT >= 16) {
 			SDK16.postOnAnimation(view, runnable);
 		} else {
 			view.postDelayed(runnable, 16);
@@ -33,7 +33,7 @@ public class ViewCompat {
 	}
 
 	public static void setBackground(View view, Drawable background) {
-		if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+		if (VERSION.SDK_INT >= 16) {
 			SDK16.setBackground(view, background);
 		} else {
 			view.setBackgroundDrawable(background);
@@ -41,7 +41,7 @@ public class ViewCompat {
 	}
 
 	public static void setLayerType(View view, int layerType) {
-		if (VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
+		if (VERSION.SDK_INT >= 11) {
 			SDK11.setLayerType(view, layerType);
 		}
 	}

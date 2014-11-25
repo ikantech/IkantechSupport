@@ -5,7 +5,6 @@ import java.io.FileFilter;
 import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -21,11 +20,9 @@ public class YiDeviceUtils
 
 	}
 
-	public static DisplayMetrics getDisplayMetrics(Activity activity)
+	public static DisplayMetrics getDisplayMetrics(Context context)
 	{
-		DisplayMetrics dm = new DisplayMetrics();
-		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-		return dm;
+		return context.getResources().getDisplayMetrics();
 	}
 	
 	public static int dip2px(Context context, float dip) {
